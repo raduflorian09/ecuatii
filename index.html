@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>Super Ecuatii Radu</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    </head>
+    <style>
+        h1 {
+            font-family: Arial, Helvetica, sans-serif;
+            margin-left: 15px;
+        }
+        .ecuatie {
+            font-size: 20px;
+            font-weight: bold;
+            margin-left: 15px;
+        }
+        .rezultat {
+            margin-top: 10px;
+        }
+        .rezultat input[type="text"] {
+            width: 60px;
+        }
+        .verifica {
+            font-family: Arial, Helvetica, sans-serif;
+            width: 100px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 15px;
+            padding: 4px 10px;
+            background-color:#006eff;
+            margin-left: 10px;
+            color: white;
+            border: solid 1px #0026ff;
+            border-radius: 5px;
+        }
+        .genereaza {
+            font-family: Arial, Helvetica, sans-serif;
+            width: 100px;
+            cursor: pointer;
+            font-weight: bold;
+            font-size: 15px;
+            padding: 4px 10px;
+            background-color:#2f8d37;
+            margin-left: 10px;
+            color: rgb(0, 0, 0);
+            border: solid 1px #3c6135;
+            border-radius: 5px;
+        }
+        .ascuns {
+            display: none;
+        }
+        .niveluri {
+            margin-left:15px;
+            margin-bottom:15px;
+            font-weight: bold;
+        }
+        .generator-exercitiu {
+            width: 400px;
+            margin: 0px auto;
+        }
+    </style>    
+    <body onload="genereazaExercitiu()">
+        <div class="generator-exercitiu">
+            <h1>Generator de exerciții</h1>
+            <div class="niveluri">
+                <span>Nivelul: </span>
+                <select id="selectie-nivel" name=niveluri onchange="schimbaLimita()">
+                    <option name=usor value=usor> Ușor </option>
+                    <option name=mediu value=mediu> Mediu </option>
+                    <option name=greu value=greu> Greu </option>
+                </select>
+            </div>
+            <div class="ecuatie">
+                    <span id='operand1'>12</span>
+                    <span id='operator'>+</span>
+                    <span id='operand2'>3</span>
+                    <span> = </span>
+                    <span id='rezultat'>15</span>
+                    <span class='genereaza' onclick="genereazaExercitiu()">GENEREZĂ EXERCIȚIU NOU</span>
+            </div>
+            <div class='ecuatie rezultat'>
+                <p>Introduceți rezultatul:</p>
+                <span>a = </span>
+                <input id="rezultat-ecuatie" type="text" onkeypress="verificaEcuatia(event)"/>
+                <span class='verifica' onclick="verifica()">VERIFICĂ</span>
+                <p>
+                    <span class="ascuns" id="rezultat-corect">Rezultat corect! 
+                        <span class="fa-stack fa-lg">
+                            <i class="fa fa-circle fa-stack-1x fa-lg" style="color: yellow;"></i>
+                            <i class="fa fa-smile-o fa-stack-1x fa-lg"></i>
+                    </span>
+                    </span>
+                    <span class="ascuns" id="rezultat-gresit">Rezultat greșit! 
+                        <span class="fa-stack fa-lg">
+                            <i class="fa fa-circle fa-stack-1x fa-lg" style="color: yellow;"></i>
+                            <i class="fa fa-frown-o fa-stack-1x fa-lg"></i>
+                    </span>
+                    </span>                
+                </p>
+            </div>
+        </div>
+    </body>
+    <script>
+        var rezultatulFinal;
+        var limita = 10;
+
+        function iaUnNumarLaInamplare(max) {
+            return Math.floor(Math.random() * Math.floor(max));
+        }
+
+        function scriePeA(pozitiaLuiA) {
+            if (pozitiaLuiA == 0) {
+                document.getElementById("operand1").textContent = "a";        
+            }
+            if (pozitiaLuiA == 1) {
+                document.getElementById("operand2").textContent = "a";
+            }
+            if (pozitiaLuiA == 2) {
+                document.getElementById("rezultat").textContent = "a";
+            }
+        }
+        
+        function scrieOperator(operator) {
+            if (operator == 0) {
+                document.getElementById("operator").textContent = "+";
+            }
+            if (operator == 1) {
+                document.getElementById("operator").textContent = "-";
+            }
+            if (operator == 2) {
+                document.getElementById("operator").textContent = "x";
+            }
+            if (operator == 3) {
+                document.getElementById("operator").textContent = ":";
+            }
+        }
+
+        function calculeazaRezultat (numarul1, numarul2, operator) {
+            if (operator == 0 || operator == 1) {
+                return numarul1 + numarul2;
+            }
+            return numarul1 * numarul2;
+        }
+
+        function scrieNumerele(numarul1, numarul2, numarul3, pozitiaLuiA, operator) {
+            if (operator == 0 || operator == 2) {
+                if (pozitiaLuiA == 0) {
+                    rezultatulFinal = numarul1;
+                    document.getElementById("operand2").textContent = numarul2;
+                    document.getElementById("rezultat").textContent = numarul3;
+                }
+                if (pozitiaLuiA == 1) {
+                    rezultatulFinal = numarul2;
+                    document.getElementById("operand1").textContent = numarul1;
+                    document.getElementById("rezultat").textContent = numarul3;
+                }
+                if (pozitiaLuiA == 2) {
+                    rezultatulFinal = numarul3;
+                    document.getElementById("operand1").textContent = numarul1;
+                    document.getElementById("operand2").textContent = numarul2;
+                }                        
+            }
+            if (operator == 1 || operator == 3) {
+                if (pozitiaLuiA == 0) {
+                    rezultatulFinal = numarul3;
+                    document.getElementById("operand2").textContent = numarul1;
+                    document.getElementById("rezultat").textContent = numarul2;
+                }
+                if (pozitiaLuiA == 1) {
+                    rezultatulFinal = numarul1;
+                    document.getElementById("operand1").textContent = numarul3;
+                    document.getElementById("rezultat").textContent = numarul2;
+                }
+                if (pozitiaLuiA == 2) {
+                    rezultatulFinal = numarul2;
+                    document.getElementById("operand1").textContent = numarul3;
+                    document.getElementById("operand2").textContent = numarul1;
+                }                        
+            }            
+        }
+
+        function verificaEcuatia(event) {
+            if (event.key == "Enter") {
+                verifica();
+            }
+        }
+
+        function verifica() {
+            if (document.getElementById("rezultat-ecuatie").value == rezultatulFinal)
+            {
+                document.getElementById("rezultat-corect").classList.remove("ascuns");
+                document.getElementById("rezultat-gresit").classList.add("ascuns");
+            }
+            else
+            {
+                document.getElementById("rezultat-gresit").classList.remove("ascuns");
+                document.getElementById("rezultat-corect").classList.add("ascuns");
+            }
+        }
+
+        function schimbaLimita() {
+            nivel = document.getElementById("selectie-nivel").value;
+            if (nivel == "usor") {
+                limita = 10;
+
+            }
+            if (nivel == "mediu") {
+                limita = 100;
+            }
+            if (nivel == "greu") {
+                limita = 1000;
+            }
+        }
+
+        function genereazaExercitiu() {
+            document.getElementById("rezultat-ecuatie").value = "";
+            document.getElementById("rezultat-corect").classList.add("ascuns");
+            document.getElementById("rezultat-gresit").classList.add("ascuns");
+            pozitiaLuiA = iaUnNumarLaInamplare(3);
+            operator = iaUnNumarLaInamplare(4);
+            scrieOperator(operator);
+            scriePeA(pozitiaLuiA);
+            numarul1 = iaUnNumarLaInamplare(limita) + 1;
+            numarul2 = iaUnNumarLaInamplare(limita) + 1;
+            numarul3 = calculeazaRezultat(numarul1, numarul2, operator);
+            scrieNumerele(numarul1, numarul2, numarul3, pozitiaLuiA, operator);
+        }
+    </script>
+</html>
